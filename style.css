@@ -1,0 +1,236 @@
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    
+    /*background-image: url('img/pokemon-background.jpg');  */
+
+}
+.d-none{
+    display: none;
+}
+.background-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.68;
+    max-height: 100vh;
+    background-image: url('img/pokemon-background.jpg');
+}
+
+.small-card{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 130px;
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+.deck{
+    display: flex !important;
+    background-image: url('img/pokeball2.png');
+    background-size: 30px 30px;
+    background-repeat: repeat-x;
+    background-position: 50% 60%;
+    justify-content: center !important;
+    margin-top: 50px !important;
+    margin-right: 25px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border: 6px solid silver;
+    min-width: 150px;
+}
+.pokedex-overview{
+    display: flex;
+    flex-direction: row;
+    margin-right: 50px;
+    z-index: 2;
+    max-width: 30vw;
+    max-height: 30vh;
+    justify-content: space-around;
+    flex-wrap: wrap;
+ 
+}
+h1{
+    font-weight: 700 !important;
+}
+.h2{
+font-size: 19px !important;
+margin-top: 15px !important;
+font-weight: 700 !important;
+}
+.h3{
+    font-size: 19px !important;
+    color: white;
+    font-weight: 600;
+}
+
+.pokecard {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    border: 2.5px solid lightgray;
+}
+
+.wholeCard{
+    z-index: 99;
+    max-height: 100vh;
+    
+}
+
+.pokedex {
+    min-height: 50vh;
+    min-width: 430px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    margin-top: 15px;
+    background-color: #FB6C6C;
+    background-image: url('img/pokeball2.png'); /*source: https://www.pngkit.com/todmca/*/
+    background-size: 80px 80px;
+    background-repeat: no-repeat;
+    background-position: 90% 16%;
+    color: white;
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+
+.info-container {
+    background-color: white;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    margin-top: -40px;
+    min-height: 400px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border: 0.5px solid rgb(112, 108, 108, 0.2);
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#pokemonImage {
+    height: 200px;
+    margin-top: -140px;
+    margin-left: 0;
+    margin-bottom: 15px;
+}
+
+.top-bar {
+    background-color: rgb(146, 141, 141, 0.1);
+}
+
+.top-bar a {
+    color: rgb(179, 165, 165);
+    text-decoration: none;
+    padding: 20px;
+}
+
+.top-bar a:hover {
+    color: black;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.info {
+    display: flex;
+    max-width: 420px;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-left: 28px;
+    padding-right: 28px;
+    margin-top: 18px;
+    font-size: 15px;
+}
+
+.sub-info{
+    display: flex;
+    justify-content: initial;
+}
+
+.right {
+    display: flex;
+    font-weight: 600;
+    min-width: 180px;
+    justify-content: flex-start;
+    padding-left: 70px;
+}
+.left {
+    color: rgb(134, 127, 127);
+    width: 86px;
+}
+.progress-bar1{
+    color: red !important;
+    background-color: red !important;
+}
+.progress-bar2{
+    color: blue !important;
+    background-color: blue !important;
+}
+.progress-bar3{
+    color: green !important;
+    background-color: green !important;
+}
+.progress-bar4{
+    color:  rgb(106, 150, 165) !important;
+    background-color: rgb(106, 150, 165) !important;
+}
+.progress-bar5{
+    color:  rgb(79, 214, 79) !important;
+    background-color: rgb(79, 214, 79) !important;
+}
+.progress-bar6{
+    color:  rgb(224, 224, 72)!important;
+    background-color:  rgb(224, 224, 72) !important;
+}
+.progress{
+    position: relative;
+    min-width: 100px;
+}
+.badge {
+    border-radius: 0.5em;
+    border: 0.5px solid rgb(90, 85, 85);
+    font-size: 1em !important;
+}
+.badge-primary{
+    font-size: 12px !important;
+}
+.dark-yellow{
+    background-color: #dac421 !important;
+}
+.dark-yellow2{
+    background-color: #e9de8f !important;
+}
+.reddish{
+    background-color: #db3838 !important;
+}
+.reddish2{
+    background-color: #FB6C6C;
+}
+.blueish{
+    background-color: rgb(73, 73, 168) !important;
+}
+.blueish2{
+    background-color: rgb(148, 148, 223) !important;
+}
+.greenish{
+    background-color: rgb(21, 121, 21) !important;
+}
+.greenish2{
+    background-color: rgb(100, 187, 100) !important;
+}
+.silverish{
+    background-color: rgb(124, 114, 114) !important;
+}
+.silverish2{
+    background-color: rgb(236, 221, 221) !important;
+}
