@@ -1,4 +1,4 @@
-let pokenames = ['charmander', 'squirtle', 'pikachu', 'venusaur', 'mewtwo'];
+let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle', 'wartortle', 'blastoise', 'pichu', 'pikachu', 'raichu', 'bulbasaur', 'ivysaur', 'venusaur', 'mewtwo', 'abra', 'kadabra', 'alakazam'];
 let currentPokemon; //dadurch kann man in allen Funktionen auf diese Variable zu greifen
 let currentSpecies;
 async function loadPokemon() {
@@ -48,160 +48,251 @@ function renderPokemonInfo(pokemon, species, i) {
     let genus = species['genera']['7']['genus'];
     let captureRate = species['capture_rate'];
     let image2 = pokemon['sprites'].front_default;
-    let image3 = pokemon['sprites'].back_default;
+    let move1 = pokemon['moves']['0']['move'].name;
+    let move2 = pokemon['moves']['1']['move'].name;
+    let move3 = pokemon['moves']['2']['move'].name;
+    let move4 = pokemon['moves']['3']['move'].name;
+    let move5 = pokemon['moves']['4']['move'].name;
+    let move6 = pokemon['moves']['5']['move'].name;
+    let move7 = pokemon['moves']['6']['move'].name;
 
-    createCard(name, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, image3);
+
+    createCard(name, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, move1, move2, move3, move4, move5, move6, move7);
 }
 
-function createCard(name, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, image3) {
+function createCard(name, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, move1, move2, move3, move4, move5, move6, move7) {
 
 
-    document.getElementById(`wholeCard`).innerHTML += `
-           <div class="pokedex d-none" id="pokedex${i}">
-           <h1>${name}</h1>
-           <span class="badge badge-secondary" id="badge${i}">${type}</span>
-            </div>
-            <div class="info-container d-none" id="info-container${i}">
-            <img src="${image}" id="pokemonImage">
-            <div class="top-bar" id="top-bar">
-                 <a href="#pokedex${i}" onclick="showAbout(${i})">About</a>
-                 <a href="#pokedex${i}" onclick="showBaseStats(${i})">Base Stats</a>
-                 <a href="#">Evolution</a>
-                 <a href="#">Moves</a>
-            </div>
-                <div class="info" id="about${i}">
-                <div class="top-info">
-                <div class="sub-info">
-                <span class="left">Weight</span>    <span class="right">${weight} lbs</span>
-                </div>
-                <div class="sub-info">
-                <span class="left">Height</span>    <span class="right">${height}0 cm</span>
-                </div>
-                <div class="sub-info">
-                <span class="left">Ability</span>    <span class="right">${ability1}, ${ability2}</span>
-                </div> 
-                <div class="sub-info">
-                <span class="left">Capture Rate</span>    <span class="right">${captureRate}</span>
-                </div> 
-                </div>
-                 <div class="breeding-info" id="breeding-info">
-                 <div class="h2">Breeding</div>
-                 <div class="sub-info">
-                 <span class="left">Egg Group</span>    <span class="right">${eggGroup}</span>
-                 </div> 
-                 <div class="sub-info">
-                 <span class="left">Genus</span>    <span class="right">${genus}</span>
-                 </div> 
-                 </div>
-                 </div>
-            <div class="info d-none" id="base-stats${i}">
-            <div class="sub-info">
-            <span class="left">HP</span>        <span class="right">${hp}</span> 
-            <div class="progress">
-            <div class="progress-bar1" role="progressbar" style="width: ${hp}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-            <div class="sub-info">
-            <span class="left">Attack</span>    <span class="right">${attack}</span>
-            <div class="progress">
-            <div class="progress-bar2" role="progressbar" style="width: ${attack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-            <div class="sub-info">
-            <span class="left">Defense</span>    <span class="right">${defense}</span>
-            <div class="progress">
-            <div class="progress-bar3" role="progressbar" style="width: ${defense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-            <div class="sub-info">
-            <span class="left">Sp.Attack</span>    <span class="right">${specialAttack}</span>
-            <div class="progress">
-            <div class="progress-bar4" role="progressbar" style="width: ${specialAttack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-          
-            <div class="sub-info">
-            <span class="left">Sp.Defense</span>    <span class="right">${specialDefense}</span>
-            <div class="progress">
-            <div class="progress-bar5" role="progressbar" style="width: ${specialDefense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-            <div class="sub-info">
-            <span class="left">Speed</span>    <span class="right">${speed}</span>
-            <div class="progress">
-            <div class="progress-bar6" role="progressbar" style="width: ${speed}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-            </div>
-            `
     document.getElementById('pokedex-overview').innerHTML += `
-            <div class="deck" id="deck${i}" onclick="showCurrentCard(${i});checkCard(${i})">
-            <div class="small-card">
-            <div class="h3">${name}</div>
-            <span class="badge badge-primary" id="badge2${i}">${type}</span>
-            <div class="small-card-images">
-            <img src="${image2}">
-           
-            </div>
-            </div>
-            </div>
-            `
+    <div class="deck" id="deck${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', '${ability2}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${move1}', '${move2}', '${move3}', '${move4}', '${move5}', '${move6}', '${move7}')">
+    <div class="small-card">
+    <div class="h3">${name}</div>
+    <span class="badge badge-primary" id="badge2${i}">${type}</span>
+    <div class="small-card-images">
+    <img src="${image2}">
+   
+    </div>
+    </div>
+    </div>
+    `
+    document.getElementById('table-small').innerHTML += `
+      <tr>
+        <th scope="row">${i+1}</th>
+        <td id="table-down${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', '${ability2}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${move1}', '${move2}', '${move3}', '${move4}', '${move5}', '${move6}', '${move7}')">${name}</td>
+        <td>${type}</td>
+      </tr>
+   
+    `
     if (type == 'water') {
-        document.getElementById(`badge${i}`).classList.add('blueish');
+        /*document.getElementById(`badge${i}`).classList.add('blueish');*/
         document.getElementById(`badge2${i}`).classList.add('blueish');
-        document.getElementById(`pokedex${i}`).classList.add('blueish2');
+        /* document.getElementById(`pokedex${i}`).classList.add('blueish2');*/
         document.getElementById(`deck${i}`).classList.add('blueish2');
+        document.getElementById(`table-down${i}`).style.backgroundColor="rgb(148, 148, 223)";
     }
     if (type == 'electric') {
-        document.getElementById(`badge${i}`).classList.add('dark-yellow');
+        /*document.getElementById(`badge${i}`).classList.add('dark-yellow');*/
         document.getElementById(`badge2${i}`).classList.add('dark-yellow');
-        document.getElementById(`pokedex${i}`).classList.add('dark-yellow2');
+        /*  document.getElementById(`pokedex${i}`).classList.add('dark-yellow2');*/
         document.getElementById(`deck${i}`).classList.add('dark-yellow2');
+        document.getElementById(`table-down${i}`).style.backgroundColor = "#e9de8f";
     }
 
     if (type == 'fire') {
-        document.getElementById(`badge${i}`).classList.add('reddish');
+        /*document.getElementById(`badge${i}`).classList.add('reddish');*/
         document.getElementById(`badge2${i}`).classList.add('reddish');
-        document.getElementById(`pokedex${i}`).classList.add('reddish2');
+        /* document.getElementById(`pokedex${i}`).classList.add('reddish2');*/
         document.getElementById(`deck${i}`).classList.add('reddish2');
+        document.getElementById(`table-down${i}`).style.backgroundColor= "#FB6C6C";
     }
     if (type == 'grass') {
-        document.getElementById(`badge${i}`).classList.add('greenish');
+        /* document.getElementById(`badge${i}`).classList.add('greenish');*/
         document.getElementById(`badge2${i}`).classList.add('greenish');
-        document.getElementById(`pokedex${i}`).classList.add('greenish2');
+        /* document.getElementById(`pokedex${i}`).classList.add('greenish2');*/
         document.getElementById(`deck${i}`).classList.add('greenish2');
+        document.getElementById(`table-down${i}`).style.backgroundColor ="rgb(100, 187, 100)";
     }
     if (type == 'psychic') {
-        document.getElementById(`badge${i}`).classList.add('silverish');
+        /*document.getElementById(`badge${i}`).classList.add('silverish');*/
         document.getElementById(`badge2${i}`).classList.add('silverish');
-        document.getElementById(`pokedex${i}`).classList.add('silverish2');
+        /*document.getElementById(`pokedex${i}`).classList.add('silverish2');*/
         document.getElementById(`deck${i}`).classList.add('silverish2');
+        document.getElementById(`table-down${i}`).style.backgroundColor ="rgb(236, 221, 221)";
     }
+
+
 }
 
 
-function showCurrentCard(i) {
-    document.getElementById('wholeCard').classList.remove('d-none');
-    document.getElementById(`pokedex${i}`).classList.remove('d-none');
-    document.getElementById(`info-container${i}`).classList.remove('d-none');
+
+function showCurrentCard(i, name, type, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, move1, move2, move3, move4, move5, move6, move7) {
+
+    document.getElementById(`wholeCard`).innerHTML ='';
+    document.getElementById(`wholeCard`).innerHTML += `
+       <div class="pokedex" id="pokedex${i}">
+       <h1>${name}</h1>
+       <span class="badge badge-secondary" id="badge${i}">${type}</span>
+        </div>
+        <div class="info-container" id="info-container${i}">
+        <img src="${image}" id="pokemonImage">
+        <div class="top-bar" id="top-bar">
+             <a href="#" onclick="showAbout(${i})">About</a>
+             <a href="#" onclick="showBaseStats(${i})">Base Stats</a>
+             <a href="#" onclick="showMoves(${i})">Moves</a>
+        </div>
+            <div class="info" id="about${i}">
+            <div class="top-info">
+            <div class="sub-info">
+            <span class="left">Weight</span>    <span class="right">${weight} lbs</span>
+            </div>
+            <div class="sub-info">
+            <span class="left">Height</span>    <span class="right">${height}0 cm</span>
+            </div>
+            <div class="sub-info">
+            <span class="left">Ability</span>    <span class="right">${ability1}, ${ability2}</span>
+            </div> 
+            <div class="sub-info">
+            <span class="left">Capture Rate</span>    <span class="right">${captureRate}</span>
+            </div> 
+            </div>
+             <div class="breeding-info" id="breeding-info">
+             <div class="h2">Breeding</div>
+             <div class="sub-info">
+             <span class="left">Egg Group</span>    <span class="right">${eggGroup}</span>
+             </div> 
+             <div class="sub-info">
+             <span class="left">Genus</span>    <span class="right">${genus}</span>
+             </div> 
+             </div>
+             </div>
+        <div class="info d-none" id="base-stats${i}">
+        <div class="sub-info">
+        <span class="left">HP</span>        <span class="right">${hp}</span> 
+        <div class="progress">
+        <div class="progress-bar1" role="progressbar" style="width: ${hp}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+        <div class="sub-info">
+        <span class="left">Attack</span>    <span class="right">${attack}</span>
+        <div class="progress">
+        <div class="progress-bar2" role="progressbar" style="width: ${attack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+        <div class="sub-info">
+        <span class="left">Defense</span>    <span class="right">${defense}</span>
+        <div class="progress">
+        <div class="progress-bar3" role="progressbar" style="width: ${defense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+        <div class="sub-info">
+        <span class="left">Sp.Attack</span>    <span class="right">${specialAttack}</span>
+        <div class="progress">
+        <div class="progress-bar4" role="progressbar" style="width: ${specialAttack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+      
+        <div class="sub-info">
+        <span class="left">Sp.Defense</span>    <span class="right">${specialDefense}</span>
+        <div class="progress">
+        <div class="progress-bar5" role="progressbar" style="width: ${specialDefense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+        <div class="sub-info">
+        <span class="left">Speed</span>    <span class="right">${speed}</span>
+        <div class="progress">
+        <div class="progress-bar6" role="progressbar" style="width: ${speed}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        </div>
+        </div>
+        
+
+        <div class="info d-none" id="moves${i}">
+            <div class="top-info">
+            <div class="sub-info">
+            <span class="left">Move 1</span>    <span class="right">${move1}</span>
+            </div>
+            <div class="sub-info">
+            <span class="left">Move 2</span>    <span class="right">${move2}</span>
+            </div>
+            <div class="sub-info">
+            <span class="left">Move 3</span>    <span class="right">${move3}</span>
+            </div> 
+            <div class="sub-info">
+            <span class="left">Move 4</span>    <span class="right">${move4}</span>
+            </div> 
+            <div class="sub-info">
+            <span class="left">Move 5</span>    <span class="right">${move5}</span>
+            </div> 
+            <div class="sub-info">
+            <span class="left">Move 6</span>    <span class="right">${move6}</span>
+            </div> 
+            <div class="sub-info">
+            <span class="left">Move 7</span>    <span class="right">${move7}</span>
+            </div> 
+            </div>
+        `
+        if (type == 'water') {
+            document.getElementById(`badge${i}`).classList.add('blueish');
+            /*document.getElementById(`badge2${i}`).classList.add('blueish');*/
+            document.getElementById(`pokedex${i}`).classList.add('blueish2');
+           /* document.getElementById(`deck${i}`).classList.add('blueish2');*/
+        }
+        if (type == 'electric') {
+            document.getElementById(`badge${i}`).classList.add('dark-yellow');
+           /* document.getElementById(`badge2${i}`).classList.add('dark-yellow');*/
+            document.getElementById(`pokedex${i}`).classList.add('dark-yellow2');
+            /*document.getElementById(`deck${i}`).classList.add('dark-yellow2');*/
+        }
+        
+        if (type == 'fire') {
+            document.getElementById(`badge${i}`).classList.add('reddish');
+            /*document.getElementById(`badge2${i}`).classList.add('reddish');*/
+            document.getElementById(`pokedex${i}`).classList.add('reddish2');
+           /* document.getElementById(`deck${i}`).classList.add('reddish2');*/
+        }
+        if (type == 'grass') {
+            document.getElementById(`badge${i}`).classList.add('greenish');
+            /*document.getElementById(`badge2${i}`).classList.add('greenish');*/
+            document.getElementById(`pokedex${i}`).classList.add('greenish2');
+            /*document.getElementById(`deck${i}`).classList.add('greenish2');*/
+        }
+        if (type == 'psychic') {
+            document.getElementById(`badge${i}`).classList.add('silverish');
+            /*document.getElementById(`badge2${i}`).classList.add('silverish');*/
+            document.getElementById(`pokedex${i}`).classList.add('silverish2');
+            /*document.getElementById(`deck${i}`).classList.add('silverish2');*/
+        }
+        
 }
 
-function checkCard(i) {
-    if (document.getElementById(`pokedex${i}`).style != "d-none") {
-        document.getElementById(`pokedex${i}`).style = "d-none";
-        document.getElementById(`info-container${i}`).style = "d-none";
 
-    }
-}
+
+
 
 function showBaseStats(i) {
     document.getElementById(`base-stats${i}`).classList.remove('d-none');
     document.getElementById(`about${i}`).classList.add('d-none');
+    document.getElementById(`moves${i}`).classList.add('d-none');
 }
-
 function showAbout(i) {
     document.getElementById(`about${i}`).classList.remove('d-none');
+    document.getElementById(`base-stats${i}`).classList.add('d-none');
+    document.getElementById(`moves${i}`).classList.add('d-none');
+
+}
+
+function showMoves(i) {
+    document.getElementById(`moves${i}`).classList.remove('d-none');
+    document.getElementById(`about${i}`).classList.add('d-none');
     document.getElementById(`base-stats${i}`).classList.add('d-none');
 
 }
 
+function showTable(){
+    let x = window.matchMedia("(max-width: 900px)")
+    if(x.matches) {
+        document.getElementById('table-whole').classList.remove('d-none');
+        document.getElementById('pokedex-overview').classList.add('d-hidden');
+        document.getElementById('wholeCard').classList.add('p-fixed');
+    }
+}
