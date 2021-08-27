@@ -121,7 +121,7 @@ td:hover {
 .deck:hover {
     filter: brightness(1);
     cursor: pointer;
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .pokedex-overview {
@@ -132,7 +132,6 @@ td:hover {
     max-height: 30vh;
     flex-wrap: wrap;
     margin-top: 80px;
-    
 }
 
 h1 {
@@ -173,7 +172,7 @@ h1 {
     background-color: #FB6C6C;
     background-image: url('img/pokeball2.png');
     /*source: https://www.pngkit.com/todmca/*/
-    background-size: 80px 80px;
+    background-size: 70px 70px;
     background-repeat: no-repeat;
     background-position: 90% 16%;
     color: white;
@@ -347,9 +346,9 @@ h1 {
     }
     .wholeCard {
         margin-right: 20px;
+        margin-top: 50px;
         display: flex;
         flex-direction: column;
-       
     }
     .background-container {
         -webkit-background-size: cover;
@@ -372,7 +371,7 @@ h1 {
         min-width: 350px;
         margin-top: 55px;
     }
-    .pokedex img{
+    .pokedex img {
         height: 10px;
         width: 10px;
     }
@@ -389,6 +388,95 @@ h1 {
     .deck:hover {
         transform: scale(1.05);
     }
-    
-    
+    .right {
+        min-width: 0px !important;
+        padding-right: 20px!important;
+    }
+}
+
+@media(max-width: 550px) {
+    .big-container {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .deck{
+        min-width: 120px;
+        max-height: 155px;
+    }
+    .pokedex-overview {
+        margin-top: -15px;
+        max-width: 80vw;
+    }
+    .pokedex{
+        background-size: 50px 50px;
+        background-position: 90% 10%;
+        max-width: 310px;
+        min-height: 40vh;
+    }
+    .info-container {
+        margin-top: -100px;
+        min-height: 240px;
+        max-width: 350px;
+    }
+    #pokemonImage {
+        height: 100px;
+        margin-top: -77px;
+        margin-left: 0;
+        margin-bottom: 15px;
+    }
+    .info {
+        display: flex;
+        max-width: 407px;
+        justify-content: space-between;
+        flex-direction: column;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-top: 13px;
+        font-size: 12px;
+    }
+    .wholeCard{
+        margin-right: 0px;
+    }
+    h1 {
+        font-size: 20px !important;
+    }
+    .h2 {
+        font-size: 17px!important;
+    }
+    .h3{
+        font-size: 13px !important;
+    }
+    .top-bar{
+        height:23px;
+    }
+    .top-bar a{
+        font-size: 14px;
+        padding: 0px
+    }
+    .small-card{
+        height: 130px;
+        margin-bottom: 40px;
+        padding-top: 20px;
+    }
+    .small-card-images img{
+        height:80px;
+        width: 80px;
+    }
+}
+
+@media(max-width: 420px){
+    .pokedex{
+        background-size: 50px 50px;
+        background-position: 90% 10%;
+        min-width: 317px;
+        min-height: 40vh;
+    }
+    .info-container {
+        margin-top: -100px;
+        min-height: 255px;
+        max-width: 317px;
+    }
+    .right{
+        padding-right: 8px !important;
+    }
 }

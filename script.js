@@ -24,12 +24,6 @@ async function loadSpecies(currentPokemon) {
 
 }
 
-//function renderSpecies(species) {
-//let color = species['color'].name;
-// createCard(color);
-
-
-
 function renderPokemonInfo(pokemon, species, i) {
     let name = pokemon['name'];
     let image = pokemon['sprites']['other']['dream_world'].front_default;
@@ -77,57 +71,96 @@ function createCard(name, image, weight, height, ability1, ability2, hp, attack,
     `
     document.getElementById('table-small').innerHTML += `
       <tr>
-        <th scope="row">${i+1}</th>
+        <th scope="row">${i + 1}</th>
         <td id="table-down${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', '${ability2}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${move1}', '${move2}', '${move3}', '${move4}', '${move5}', '${move6}', '${move7}')">${name}</td>
         <td>${type}</td>
       </tr>
-   
     `
-    if (type == 'water') {
-        /*document.getElementById(`badge${i}`).classList.add('blueish');*/
-        document.getElementById(`badge2${i}`).classList.add('blueish');
-        /* document.getElementById(`pokedex${i}`).classList.add('blueish2');*/
-        document.getElementById(`deck${i}`).classList.add('blueish2');
-        document.getElementById(`table-down${i}`).style.backgroundColor="rgb(148, 148, 223)";
-    }
-    if (type == 'electric') {
-        /*document.getElementById(`badge${i}`).classList.add('dark-yellow');*/
-        document.getElementById(`badge2${i}`).classList.add('dark-yellow');
-        /*  document.getElementById(`pokedex${i}`).classList.add('dark-yellow2');*/
-        document.getElementById(`deck${i}`).classList.add('dark-yellow2');
-        document.getElementById(`table-down${i}`).style.backgroundColor = "#e9de8f";
-    }
+    checkDeckColor(i, type);
+}
 
-    if (type == 'fire') {
-        /*document.getElementById(`badge${i}`).classList.add('reddish');*/
-        document.getElementById(`badge2${i}`).classList.add('reddish');
-        /* document.getElementById(`pokedex${i}`).classList.add('reddish2');*/
-        document.getElementById(`deck${i}`).classList.add('reddish2');
-        document.getElementById(`table-down${i}`).style.backgroundColor= "#FB6C6C";
+function getBadgeColor(type){
+    if(type == 'water'){
+        return 'blueish';
+    } else if (type =='electric'){
+        return 'dark-yellow';
+    } else if (type == 'fire'){
+        return 'reddish';
+    } else if (type == 'grass'){
+        return 'greenish';
+    } else if (type =='psychic'){
+        return 'silverish';
     }
-    if (type == 'grass') {
-        /* document.getElementById(`badge${i}`).classList.add('greenish');*/
-        document.getElementById(`badge2${i}`).classList.add('greenish');
-        /* document.getElementById(`pokedex${i}`).classList.add('greenish2');*/
-        document.getElementById(`deck${i}`).classList.add('greenish2');
-        document.getElementById(`table-down${i}`).style.backgroundColor ="rgb(100, 187, 100)";
+}
+function getDeckColor(type){
+    if (type=='water'){
+        return 'blueish2';
+    } else if (type =='electric'){
+        return 'dark-yellow2';
+    } else if (type =='fire'){
+        return 'reddish2';
+    } else if (type == 'grass'){
+        return 'greenish2';
+    } else if(type =='psychic'){
+        return 'silverish2';
     }
-    if (type == 'psychic') {
-        /*document.getElementById(`badge${i}`).classList.add('silverish');*/
-        document.getElementById(`badge2${i}`).classList.add('silverish');
-        /*document.getElementById(`pokedex${i}`).classList.add('silverish2');*/
-        document.getElementById(`deck${i}`).classList.add('silverish2');
-        document.getElementById(`table-down${i}`).style.backgroundColor ="rgb(236, 221, 221)";
-    }
+}
 
+function getTableColor(type){
+    if (type == 'water'){
+        return "rgb(148, 148, 223)";
+    } else if (type == 'electric'){
+        return "#e9de8f";
+    } else if (type == 'fire'){
+        return "#FB6C6C";
+    } else if (type == 'grass'){
+        return "rgb(100, 187, 100)";
+    } else if (type == 'psychic'){
+        return "rgb(236, 221, 221)";
+    }
+}
 
+function checkDeckColor(i, type) {
+    let badgeColor = getBadgeColor(type);
+    let deckColor = getDeckColor(type);
+    let tableColor = getTableColor(type);
+    document.getElementById(`badge2${i}`).classList.add(badgeColor);
+    document.getElementById(`deck${i}`).classList.add(deckColor);
+    document.getElementById(`table-down${i}`).style.backgroundColor = tableColor;
+   
 }
 
 
-
+/** This function generates the zoomed-in card on click
+ * 
+ * @param {number} i - index of the Pokemon
+ * @param {string} name - name of the Pokemon  
+ * @param {string} type - type of the Pokemon
+ * @param {url} image - front image of the Pokemon
+ * @param {number} weight - weight of the Pokemon 
+ * @param {number} height - height of the Pokemon
+ * @param {string} ability1 - 1st ability of the Pokemon
+ * @param {string} ability2 - 2nd ability of the Pokemon
+ * @param {number} hp - hit points of the Pokemon 
+ * @param {number} attack - attack value of the Pokemon 
+ * @param {number} defense - defense valut of the Pokemon
+ * @param {number} specialAttack - value of special attack
+ * @param {number} specialDefense - value of special defense
+ * @param {number} speed - speed of the Pokemon
+ * @param {string} type - elemental type of the Pokemon
+ * @param {string} eggGroup - egg group of the Pokemon
+ * @param {string} genus - genus of the Pokemon
+ * @param {number} captureRate frequency of the Pokemon
+ * @param {string} move1 
+ * @param {string} move2 
+ * @param {string} move3 
+ * @param {string} move4 
+ * @param {string} move5 
+ * @param {string} move6 
+ * @param {string} move7 
+ */
 function showCurrentCard(i, name, type, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, move1, move2, move3, move4, move5, move6, move7) {
-
-    document.getElementById(`wholeCard`).innerHTML ='';
+    document.getElementById(`wholeCard`).innerHTML = '';
     document.getElementById(`wholeCard`).innerHTML += `
        <div class="pokedex" id="pokedex${i}">
        <h1>${name}</h1>
@@ -231,42 +264,34 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
             </div> 
             </div>
         `
-        if (type == 'water') {
-            document.getElementById(`badge${i}`).classList.add('blueish');
-            /*document.getElementById(`badge2${i}`).classList.add('blueish');*/
-            document.getElementById(`pokedex${i}`).classList.add('blueish2');
-           /* document.getElementById(`deck${i}`).classList.add('blueish2');*/
-        }
-        if (type == 'electric') {
-            document.getElementById(`badge${i}`).classList.add('dark-yellow');
-           /* document.getElementById(`badge2${i}`).classList.add('dark-yellow');*/
-            document.getElementById(`pokedex${i}`).classList.add('dark-yellow2');
-            /*document.getElementById(`deck${i}`).classList.add('dark-yellow2');*/
-        }
-        
-        if (type == 'fire') {
-            document.getElementById(`badge${i}`).classList.add('reddish');
-            /*document.getElementById(`badge2${i}`).classList.add('reddish');*/
-            document.getElementById(`pokedex${i}`).classList.add('reddish2');
-           /* document.getElementById(`deck${i}`).classList.add('reddish2');*/
-        }
-        if (type == 'grass') {
-            document.getElementById(`badge${i}`).classList.add('greenish');
-            /*document.getElementById(`badge2${i}`).classList.add('greenish');*/
-            document.getElementById(`pokedex${i}`).classList.add('greenish2');
-            /*document.getElementById(`deck${i}`).classList.add('greenish2');*/
-        }
-        if (type == 'psychic') {
-            document.getElementById(`badge${i}`).classList.add('silverish');
-            /*document.getElementById(`badge2${i}`).classList.add('silverish');*/
-            document.getElementById(`pokedex${i}`).classList.add('silverish2');
-            /*document.getElementById(`deck${i}`).classList.add('silverish2');*/
-        }
-        
+    checkCardColor(i, type);
 }
 
 
 
+
+function checkCardColor(i, type) {
+    if (type == 'water') {
+        document.getElementById(`badge${i}`).classList.add('blueish');
+        document.getElementById(`pokedex${i}`).classList.add('blueish2');
+    }
+    if (type == 'electric') {
+        document.getElementById(`badge${i}`).classList.add('dark-yellow');
+        document.getElementById(`pokedex${i}`).classList.add('dark-yellow2');
+    }
+    if (type == 'fire') {
+        document.getElementById(`badge${i}`).classList.add('reddish');
+        document.getElementById(`pokedex${i}`).classList.add('reddish2');
+    }
+    if (type == 'grass') {
+        document.getElementById(`badge${i}`).classList.add('greenish');
+        document.getElementById(`pokedex${i}`).classList.add('greenish2');
+    }
+    if (type == 'psychic') {
+        document.getElementById(`badge${i}`).classList.add('silverish');
+        document.getElementById(`pokedex${i}`).classList.add('silverish2');
+    }
+}
 
 
 function showBaseStats(i) {
@@ -288,11 +313,11 @@ function showMoves(i) {
 
 }
 
-function showTable(){
+function showTable() {
     let x = window.matchMedia("(max-width: 900px)")
-    if(x.matches) {
+    if (x.matches) {
         document.getElementById('table-whole').classList.remove('d-none');
-        document.getElementById('pokedex-overview').classList.add('d-hidden');
+        document.getElementById('pokedex-overview').classList.add('d-none');
         document.getElementById('wholeCard').classList.add('p-fixed');
     }
 }
