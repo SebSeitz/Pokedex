@@ -12,7 +12,16 @@ let audio2 = new Audio('audio/water_splash.mp3');
 let audio3 = new Audio('audio/grass.mp3');
 let audio4 = new Audio('audio/fire.mp3');
 let audio5 = new Audio('audio/warp.mp3');
+
 async function loadPokemon() {
+    window.addEventListener('scroll', ()=>{
+       const scrolled = window.scrollY;
+       console.log(scrolled);
+        if(scrolled == 400){
+            
+        }
+
+    });
 
     for (let i = 0; i < pokenames.length; i++) {
         const pokename = pokenames[i]
@@ -201,14 +210,19 @@ function checkDeckColor(i, type) {
 function showCurrentCard(i, name, type, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, move1, move2, move3, move4, move5, move6, move7) {
     if (type == 'electric') {
         audio1.play();
+        audio1.volume = 0.3;
     } else if (type == 'water') {
         audio2.play();
+        audio2.volume = 0.3;
     } else if (type == 'grass') {
         audio3.play();
+        audio3.volume = 0.3;
     } else if (type == 'fire') {
         audio4.play();
+        audio4.volume = 0.5;
     } else if (type == 'psychic') {
         audio5.play();
+        audio5.volume = 0.3;
     }
     window.scrollTo(0, 0);
     document.getElementById(`wholeCard`).innerHTML = '';
