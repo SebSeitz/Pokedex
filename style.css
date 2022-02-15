@@ -338,6 +338,19 @@ h1 {
     background-color: rgb(236, 221, 221) !important;
 }
 
+.dark-green{
+    background-color: rgb(109, 196, 109);
+}
+.dark-green2{
+    background-color: rgb(20, 107, 20);
+}
+.purple{
+    background-color: rgb(136, 24, 136);
+}
+.purple2{
+    background-color: rgb(167, 77, 167);
+}
+
 @media(max-width: 900px) {
     .mobile-button {
         display: flex !important;

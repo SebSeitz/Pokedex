@@ -1,18 +1,27 @@
-let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle', 'wartortle', 'blastoise', 'pichu', 'pikachu', 'raichu', 'bulbasaur', 'ivysaur', 'venusaur', 'mewtwo', 'abra', 'kadabra', 'alakazam'];
+let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle',
+    'wartortle', 'blastoise', 'pichu', 'pikachu', 'raichu',
+    'bulbasaur', 'ivysaur', 'venusaur', 'mewtwo', 'abra',
+    'kadabra', 'alakazam', 'pidgey', 'pidgeotto', 'pidgeot', 'vulpix',
+    'ninetales', 'zubat', 'golbat', 'crobat', 'oddish', 'gloom',
+    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck'];
 let currentPokemon; //dadurch kann man in allen Funktionen auf diese Variable zu greifen
 let currentSpecies;
+
+let audio1 = new Audio('audio/weird_pikachu.mp3');
+let audio2 = new Audio('audio/water_splash.mp3');
+let audio3 = new Audio('audio/grass.mp3');
+let audio4 = new Audio('audio/fire.mp3');
+let audio5 = new Audio('audio/warp.mp3');
 async function loadPokemon() {
 
     for (let i = 0; i < pokenames.length; i++) {
         const pokename = pokenames[i]
         let url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
-
         let response = await fetch(url);
         currentPokemon = await response.json();
         console.log('loaded Pokemon', currentPokemon);
         await loadSpecies(currentPokemon);
         renderPokemonInfo(currentPokemon, currentSpecies, i);
-
     }
 }
 
@@ -23,6 +32,28 @@ async function loadSpecies(currentPokemon) {
     console.log('loaded Species', currentSpecies);
 
 }
+
+function searchPokemon() {
+    let search = document.getElementById('searchInput').value;
+    let searchResults = pokenames.filter(pokemon => pokemon.includes(search, 0));
+    updatePokemons(searchResults);
+}
+
+
+
+
+async function updatePokemons(pokemons) {
+    document.getElementById('pokedex-overview').innerHTML = '';
+    for (let i = 0; i < pokemons.length; i++) {
+        const pokename = pokemons[i]
+        let url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
+        let response = await fetch(url);
+        currentPokemon = await response.json();
+        await loadSpecies(currentPokemon);
+        renderPokemonInfo(currentPokemon, currentSpecies, i);
+    }
+}
+
 
 function renderPokemonInfo(pokemon, species, i) {
     let name = pokemon['name'];
@@ -64,7 +95,7 @@ function createCard(name, image, weight, height, ability1, ability2, hp, attack,
     <span class="badge badge-primary" id="badge2${i}">${type}</span>
     <div class="small-card-images">
     <img src="${image2}">
-   
+
     </div>
     </div>
     </div>
@@ -79,43 +110,51 @@ function createCard(name, image, weight, height, ability1, ability2, hp, attack,
     checkDeckColor(i, type);
 }
 
-function getBadgeColor(type){
-    if(type == 'water'){
+function getBadgeColor(type) {
+    if (type == 'water') {
         return 'blueish';
-    } else if (type =='electric'){
+    } else if (type == 'electric') {
         return 'dark-yellow';
-    } else if (type == 'fire'){
+    } else if (type == 'fire') {
         return 'reddish';
-    } else if (type == 'grass'){
+    } else if (type == 'grass') {
         return 'greenish';
-    } else if (type =='psychic'){
+    } else if (type == 'psychic') {
         return 'silverish';
+    } else if (type == 'poison') {
+        return 'dark-green'
+    } else if (type == 'normal') {
+        return 'purple'
     }
 }
-function getDeckColor(type){
-    if (type=='water'){
+function getDeckColor(type) {
+    if (type == 'water') {
         return 'blueish2';
-    } else if (type =='electric'){
+    } else if (type == 'electric') {
         return 'dark-yellow2';
-    } else if (type =='fire'){
+    } else if (type == 'fire') {
         return 'reddish2';
-    } else if (type == 'grass'){
+    } else if (type == 'grass') {
         return 'greenish2';
-    } else if(type =='psychic'){
+    } else if (type == 'psychic') {
         return 'silverish2';
+    } else if (type == 'poison') {
+        return 'dark-green2';
+    } else if (type == 'normal') {
+        return 'purple2'
     }
 }
 
-function getTableColor(type){
-    if (type == 'water'){
+function getTableColor(type) {
+    if (type == 'water') {
         return "rgb(148, 148, 223)";
-    } else if (type == 'electric'){
+    } else if (type == 'electric') {
         return "#e9de8f";
-    } else if (type == 'fire'){
+    } else if (type == 'fire') {
         return "#FB6C6C";
-    } else if (type == 'grass'){
+    } else if (type == 'grass') {
         return "rgb(100, 187, 100)";
-    } else if (type == 'psychic'){
+    } else if (type == 'psychic') {
         return "rgb(236, 221, 221)";
     }
 }
@@ -127,22 +166,22 @@ function checkDeckColor(i, type) {
     document.getElementById(`badge2${i}`).classList.add(badgeColor);
     document.getElementById(`deck${i}`).classList.add(deckColor);
     document.getElementById(`table-down${i}`).style.backgroundColor = tableColor;
-   
+
 }
 
 
 /** This function generates the zoomed-in card on click
- * 
+ *
  * @param {number} i - index of the Pokemon
- * @param {string} name - name of the Pokemon  
+ * @param {string} name - name of the Pokemon
  * @param {string} type - type of the Pokemon
  * @param {url} image - front image of the Pokemon
- * @param {number} weight - weight of the Pokemon 
+ * @param {number} weight - weight of the Pokemon
  * @param {number} height - height of the Pokemon
  * @param {string} ability1 - 1st ability of the Pokemon
  * @param {string} ability2 - 2nd ability of the Pokemon
- * @param {number} hp - hit points of the Pokemon 
- * @param {number} attack - attack value of the Pokemon 
+ * @param {number} hp - hit points of the Pokemon
+ * @param {number} attack - attack value of the Pokemon
  * @param {number} defense - defense valut of the Pokemon
  * @param {number} specialAttack - value of special attack
  * @param {number} specialDefense - value of special defense
@@ -151,15 +190,27 @@ function checkDeckColor(i, type) {
  * @param {string} eggGroup - egg group of the Pokemon
  * @param {string} genus - genus of the Pokemon
  * @param {number} captureRate frequency of the Pokemon
- * @param {string} move1 
- * @param {string} move2 
- * @param {string} move3 
- * @param {string} move4 
- * @param {string} move5 
- * @param {string} move6 
- * @param {string} move7 
+ * @param {string} move1
+ * @param {string} move2
+ * @param {string} move3
+ * @param {string} move4
+ * @param {string} move5
+ * @param {string} move6
+ * @param {string} move7
  */
 function showCurrentCard(i, name, type, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, move1, move2, move3, move4, move5, move6, move7) {
+    if (type == 'electric') {
+        audio1.play();
+    } else if (type == 'water') {
+        audio2.play();
+    } else if (type == 'grass') {
+        audio3.play();
+    } else if (type == 'fire') {
+        audio4.play();
+    } else if (type == 'psychic') {
+        audio5.play();
+    }
+    window.scrollTo(0, 0);
     document.getElementById(`wholeCard`).innerHTML = '';
     document.getElementById(`wholeCard`).innerHTML += `
        <div class="pokedex" id="pokedex${i}">
@@ -183,24 +234,24 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
             </div>
             <div class="sub-info">
             <span class="left">Ability</span>    <span class="right">${ability1}, ${ability2}</span>
-            </div> 
+            </div>
             <div class="sub-info">
             <span class="left">Capture Rate</span>    <span class="right">${captureRate}</span>
-            </div> 
+            </div>
             </div>
              <div class="breeding-info" id="breeding-info">
              <div class="h2">Breeding</div>
              <div class="sub-info">
              <span class="left">Egg Group</span>    <span class="right">${eggGroup}</span>
-             </div> 
+             </div>
              <div class="sub-info">
              <span class="left">Genus</span>    <span class="right">${genus}</span>
-             </div> 
+             </div>
              </div>
              </div>
         <div class="info d-none" id="base-stats${i}">
         <div class="sub-info">
-        <span class="left">HP</span>        <span class="right">${hp}</span> 
+        <span class="left">HP</span>        <span class="right">${hp}</span>
         <div class="progress">
         <div class="progress-bar1" role="progressbar" style="width: ${hp}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -223,7 +274,7 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
         <div class="progress-bar4" role="progressbar" style="width: ${specialAttack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
-      
+
         <div class="sub-info">
         <span class="left">Sp.Defense</span>    <span class="right">${specialDefense}</span>
         <div class="progress">
@@ -237,7 +288,7 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
         </div>
         </div>
         </div>
-        
+
 
         <div class="info d-none" id="moves${i}">
             <div class="top-info">
@@ -249,25 +300,23 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
             </div>
             <div class="sub-info">
             <span class="left">Move 3</span>    <span class="right">${move3}</span>
-            </div> 
+            </div>
             <div class="sub-info">
             <span class="left">Move 4</span>    <span class="right">${move4}</span>
-            </div> 
+            </div>
             <div class="sub-info">
             <span class="left">Move 5</span>    <span class="right">${move5}</span>
-            </div> 
+            </div>
             <div class="sub-info">
             <span class="left">Move 6</span>    <span class="right">${move6}</span>
-            </div> 
+            </div>
             <div class="sub-info">
             <span class="left">Move 7</span>    <span class="right">${move7}</span>
-            </div> 
+            </div>
             </div>
         `
     checkCardColor(i, type);
 }
-
-
 
 
 function checkCardColor(i, type) {
@@ -290,6 +339,14 @@ function checkCardColor(i, type) {
     if (type == 'psychic') {
         document.getElementById(`badge${i}`).classList.add('silverish');
         document.getElementById(`pokedex${i}`).classList.add('silverish2');
+    }
+    if (type == 'poison') {
+        document.getElementById(`badge${i}`).classList.add('dark-green');
+        document.getElementById(`pokedex${i}`).classList.add('dark-green2');
+    }
+    if (type == 'normal') {
+        document.getElementById(`badge${i}`).classList.add('purple');
+        document.getElementById(`pokedex${i}`).classList.add('purple2');
     }
 }
 
