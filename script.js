@@ -3,9 +3,13 @@ let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle',
     'bulbasaur', 'ivysaur', 'venusaur', 'mewtwo', 'abra',
     'kadabra', 'alakazam', 'pidgey', 'pidgeotto', 'pidgeot', 'vulpix',
     'ninetales', 'zubat', 'golbat', 'crobat', 'oddish', 'gloom',
-    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck'];
+    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck'
+];
 let currentPokemon; //dadurch kann man in allen Funktionen auf diese Variable zu greifen
 let currentSpecies;
+let pokename;
+let url;
+let response;
 
 let audio1 = new Audio('audio/weird_pikachu.mp3');
 let audio2 = new Audio('audio/water_splash.mp3');
@@ -14,32 +18,40 @@ let audio4 = new Audio('audio/fire.mp3');
 let audio5 = new Audio('audio/warp.mp3');
 
 async function loadPokemon() {
-    window.addEventListener('scroll', ()=>{
-       const scrolled = window.scrollY;
-       console.log(scrolled);
-        if(scrolled == 400){
-            
-        }
-
-    });
-
-    for (let i = 0; i < pokenames.length; i++) {
+    for (let i = 0; i < 20; i++) {
         const pokename = pokenames[i]
-        let url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
-        let response = await fetch(url);
+        url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
+        response = await fetch(url);
         currentPokemon = await response.json();
         console.log('loaded Pokemon', currentPokemon);
         await loadSpecies(currentPokemon);
         renderPokemonInfo(currentPokemon, currentSpecies, i);
     }
+    window.addEventListener('scroll', checkScroll);
 }
+
+const checkScroll = async () => {
+    const scrolled = window.scrollY;
+    if (scrolled == 300) {
+        console.log('scrolled down');
+        for (i = 20; i < pokenames.length; i++) {
+            const pokename = pokenames[i]
+            url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
+            response = await fetch(url);
+            currentPokemon = await response.json();
+            await loadSpecies(currentPokemon);
+            renderPokemonInfo(currentPokemon, currentSpecies, i);
+            removeEventListener('scroll', checkScroll);
+        }
+    }
+}
+
 
 async function loadSpecies(currentPokemon) {
     let url = currentPokemon['species']['url'];
     let response = await fetch(url);
     currentSpecies = await response.json(); //currentSpecies ist global als leere Variable definiert
     console.log('loaded Species', currentSpecies);
-
 }
 
 function searchPokemon() {
@@ -47,8 +59,6 @@ function searchPokemon() {
     let searchResults = pokenames.filter(pokemon => pokemon.includes(search, 0));
     updatePokemons(searchResults);
 }
-
-
 
 
 async function updatePokemons(pokemons) {
@@ -131,9 +141,9 @@ function getBadgeColor(type) {
     } else if (type == 'psychic') {
         return 'silverish';
     } else if (type == 'poison') {
-        return 'dark-green'
+        return 'dark-green';
     } else if (type == 'normal') {
-        return 'purple'
+        return 'purple';
     }
 }
 function getDeckColor(type) {
@@ -150,7 +160,7 @@ function getDeckColor(type) {
     } else if (type == 'poison') {
         return 'dark-green2';
     } else if (type == 'normal') {
-        return 'purple2'
+        return 'purple2';
     }
 }
 
@@ -228,6 +238,7 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
     document.getElementById(`wholeCard`).innerHTML = '';
     document.getElementById(`wholeCard`).innerHTML += `
        <div class="pokedex" id="pokedex${i}">
+       <img class="back" onclick="closeSingleCard()" src="img/cancel.png">
        <h1>${name}</h1>
        <span class="badge badge-secondary" id="badge${i}">${type}</span>
         </div>
@@ -330,6 +341,10 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
             </div>
         `
     checkCardColor(i, type);
+}
+
+function closeSingleCard(){
+    document.getElementById(`wholeCard`).innerHTML = '';
 }
 
 

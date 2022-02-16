@@ -72,6 +72,16 @@ td:hover {
     display: flex;
 }
 
+.back{
+    height: 30px;
+    width: 30px;
+    transition: transform .2s;
+}
+.back:hover{
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
 .background-container {
     position: fixed;
     left: 0;
