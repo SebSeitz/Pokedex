@@ -3,7 +3,8 @@ let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle',
     'bulbasaur', 'ivysaur', 'venusaur', 'mewtwo', 'abra',
     'kadabra', 'alakazam', 'pidgey', 'pidgeotto', 'pidgeot', 'vulpix',
     'ninetales', 'zubat', 'golbat', 'crobat', 'oddish', 'gloom',
-    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck'
+    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck', 'weedle',
+    'kakuna',
 ];
 let currentPokemon; //dadurch kann man in allen Funktionen auf diese Variable zu greifen
 let currentSpecies;
@@ -28,13 +29,15 @@ async function loadPokemon() {
         renderPokemonInfo(currentPokemon, currentSpecies, i);
     }
     window.addEventListener('scroll', checkScroll);
+    window.addEventListener('scroll', checkScroll2)
 }
 
 const checkScroll = async () => {
     const scrolled = window.scrollY;
+    console.log(scrolled);
     if (scrolled == 300) {
         console.log('scrolled down');
-        for (i = 20; i < pokenames.length; i++) {
+        for (i = 20; i < 31; i++) {
             const pokename = pokenames[i]
             url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
             response = await fetch(url);
@@ -42,6 +45,22 @@ const checkScroll = async () => {
             await loadSpecies(currentPokemon);
             renderPokemonInfo(currentPokemon, currentSpecies, i);
             removeEventListener('scroll', checkScroll);
+
+        }
+    }
+}
+const checkScroll2 = async () => {
+    const scrolled = window.scrollY;
+    if (scrolled == 800) {
+        console.log('scrolled down');
+        for (i = 31; i < 32; i++) {
+            const pokename = pokenames[i]
+            url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
+            response = await fetch(url);
+            currentPokemon = await response.json();
+            await loadSpecies(currentPokemon);
+            renderPokemonInfo(currentPokemon, currentSpecies, i);
+            removeEventListener('scroll', checkScroll2);
         }
     }
 }
@@ -185,7 +204,6 @@ function checkDeckColor(i, type) {
     document.getElementById(`badge2${i}`).classList.add(badgeColor);
     document.getElementById(`deck${i}`).classList.add(deckColor);
     document.getElementById(`table-down${i}`).style.backgroundColor = tableColor;
-
 }
 
 
@@ -218,22 +236,7 @@ function checkDeckColor(i, type) {
  * @param {string} move7
  */
 function showCurrentCard(i, name, type, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, move1, move2, move3, move4, move5, move6, move7) {
-    if (type == 'electric') {
-        audio1.play();
-        audio1.volume = 0.3;
-    } else if (type == 'water') {
-        audio2.play();
-        audio2.volume = 0.3;
-    } else if (type == 'grass') {
-        audio3.play();
-        audio3.volume = 0.3;
-    } else if (type == 'fire') {
-        audio4.play();
-        audio4.volume = 0.5;
-    } else if (type == 'psychic') {
-        audio5.play();
-        audio5.volume = 0.3;
-    }
+    addAudio(type);
     window.scrollTo(0, 0);
     document.getElementById(`wholeCard`).innerHTML = '';
     document.getElementById(`wholeCard`).innerHTML += `
@@ -343,8 +346,27 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
     checkCardColor(i, type);
 }
 
-function closeSingleCard(){
+function closeSingleCard() {
     document.getElementById(`wholeCard`).innerHTML = '';
+}
+
+function addAudio(type){
+    if (type == 'electric') {
+        audio1.play();
+        audio1.volume = 0.3;
+    } else if (type == 'water') {
+        audio2.play();
+        audio2.volume = 0.3;
+    } else if (type == 'grass') {
+        audio3.play();
+        audio3.volume = 0.3;
+    } else if (type == 'fire') {
+        audio4.play();
+        audio4.volume = 0.5;
+    } else if (type == 'psychic') {
+        audio5.play();
+        audio5.volume = 0.3;
+    }
 }
 
 
