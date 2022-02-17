@@ -281,38 +281,38 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
         <div class="sub-info">
         <span class="left">HP</span>        <span class="right">${hp}</span>
         <div class="progress">
-        <div class="progress-bar1" role="progressbar" style="width: ${hp}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar1 progressSlider" role="progressbar" style="width: ${hp}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
         <div class="sub-info">
         <span class="left">Attack</span>    <span class="right">${attack}</span>
         <div class="progress">
-        <div class="progress-bar2" role="progressbar" style="width: ${attack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar2 progressSlider" role="progressbar" style="width: ${attack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
         <div class="sub-info">
         <span class="left">Defense</span>    <span class="right">${defense}</span>
         <div class="progress">
-        <div class="progress-bar3" role="progressbar" style="width: ${defense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar3 progressSlider" role="progressbar" style="width: ${defense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
         <div class="sub-info">
         <span class="left">Sp.Attack</span>    <span class="right">${specialAttack}</span>
         <div class="progress">
-        <div class="progress-bar4" role="progressbar" style="width: ${specialAttack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar4 progressSlider" role="progressbar" style="width: ${specialAttack}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
 
         <div class="sub-info">
         <span class="left">Sp.Defense</span>    <span class="right">${specialDefense}</span>
         <div class="progress">
-        <div class="progress-bar5" role="progressbar" style="width: ${specialDefense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar5 progressSlider" role="progressbar" style="width: ${specialDefense}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
         <div class="sub-info">
         <span class="left">Speed</span>    <span class="right">${speed}</span>
         <div class="progress">
-        <div class="progress-bar6" role="progressbar" style="width: ${speed}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar6 progressSlider" role="progressbar" style="width: ${speed}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         </div>
         </div>
