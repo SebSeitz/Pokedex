@@ -1,16 +1,22 @@
-let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle',
+/*let pokenames = ['charmander', 'charmeleon', 'charizard', 'squirtle',
     'wartortle', 'blastoise', 'pichu', 'pikachu', 'raichu',
     'bulbasaur', 'ivysaur', 'venusaur', 'mewtwo', 'abra',
     'kadabra', 'alakazam', 'pidgey', 'pidgeotto', 'pidgeot', 'vulpix',
     'ninetales', 'zubat', 'golbat', 'crobat', 'oddish', 'gloom',
-    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck', 'weedle',
-    'kakuna',
-];
+    'bellossom', 'meowth', 'persian', 'psyduck', 'golduck', 'rattata', 'raticate'
+];*/
 let currentPokemon; //dadurch kann man in allen Funktionen auf diese Variable zu greifen
 let currentSpecies;
 let pokename;
 let url;
 let response;
+let loadNextPokemon = 20;
+let checkThisEvent;
+let name;
+let nameList = [];
+const maxPokemonCount = 100;
+
+
 
 let audio1 = new Audio('audio/weird_pikachu.mp3');
 let audio2 = new Audio('audio/water_splash.mp3');
@@ -19,52 +25,42 @@ let audio4 = new Audio('audio/fire.mp3');
 let audio5 = new Audio('audio/warp.mp3');
 
 async function loadPokemon() {
-    for (let i = 0; i < 20; i++) {
-        const pokename = pokenames[i]
-        url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
+    for (let i = 1; i < loadNextPokemon; i++) {
+        // const pokename = pokenames[i]
+        url = `https://pokeapi.co/api/v2/pokemon/${i}`;
         response = await fetch(url);
         currentPokemon = await response.json();
         console.log('loaded Pokemon', currentPokemon);
         await loadSpecies(currentPokemon);
         renderPokemonInfo(currentPokemon, currentSpecies, i);
+        createNameList(i);
     }
     window.addEventListener('scroll', checkScroll);
-    window.addEventListener('scroll', checkScroll2)
+
+}
+
+function createNameList() {
+    nameList.push(currentPokemon['name']);
+    console.log('this is the name list', nameList);
 }
 
 const checkScroll = async () => {
-    const scrolled = window.scrollY;
-    console.log(scrolled);
-    if (scrolled == 300) {
-        console.log('scrolled down');
-        for (i = 20; i < 31; i++) {
-            const pokename = pokenames[i]
-            url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
-            response = await fetch(url);
-            currentPokemon = await response.json();
-            await loadSpecies(currentPokemon);
-            renderPokemonInfo(currentPokemon, currentSpecies, i);
+    if (window.scrollY + window.innerHeight >= document.body.clientHeight) {
+        if (loadNextPokemon == maxPokemonCount) {
             removeEventListener('scroll', checkScroll);
-
+            return;
         }
-    }
-}
-const checkScroll2 = async () => {
-    const scrolled = window.scrollY;
-    if (scrolled == 800) {
-        console.log('scrolled down');
-        for (i = 31; i < 32; i++) {
-            const pokename = pokenames[i]
-            url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
+        for (i = loadNextPokemon; i < loadNextPokemon + 5; i++) {
+            url = `https://pokeapi.co/api/v2/pokemon/${i}`;
             response = await fetch(url);
             currentPokemon = await response.json();
             await loadSpecies(currentPokemon);
             renderPokemonInfo(currentPokemon, currentSpecies, i);
-            removeEventListener('scroll', checkScroll2);
         }
+        loadNextPokemon += 5;
+        console.log('current pokemonCount', loadNextPokemon);
     }
 }
-
 
 async function loadSpecies(currentPokemon) {
     let url = currentPokemon['species']['url'];
@@ -74,15 +70,16 @@ async function loadSpecies(currentPokemon) {
 }
 
 function searchPokemon() {
+    console.log(loadNextPokemon)
     let search = document.getElementById('searchInput').value;
-    let searchResults = pokenames.filter(pokemon => pokemon.includes(search, 0));
+    let searchResults = nameList.filter(pokemon => pokemon.includes(search, 0));
     updatePokemons(searchResults);
 }
 
 
 async function updatePokemons(pokemons) {
     document.getElementById('pokedex-overview').innerHTML = '';
-    for (let i = 0; i < pokemons.length; i++) {
+    for (let i = 0; i < loadNextPokemon; i++) {
         const pokename = pokemons[i]
         let url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
         let response = await fetch(url);
@@ -98,8 +95,8 @@ function renderPokemonInfo(pokemon, species, i) {
     let image = pokemon['sprites']['other']['dream_world'].front_default;
     let weight = pokemon['weight'];
     let height = pokemon['height'];
-    let ability1 = pokemon['abilities']['0']['ability']['name'];
-    let ability2 = pokemon['abilities']['1']['ability']['name'];
+    /*let ability1 = pokemon['abilities']['0']['ability']['name'];
+    let ability2 = pokemon['abilities']['1']['ability']['name'];*/
     let type = pokemon['types']['0']['type'].name;
     let hp = pokemon['stats']['0']['base_stat'];
     let attack = pokemon['stats']['1']['base_stat'];
@@ -111,23 +108,27 @@ function renderPokemonInfo(pokemon, species, i) {
     let genus = species['genera']['7']['genus'];
     let captureRate = species['capture_rate'];
     let image2 = pokemon['sprites'].front_default;
-    let move1 = pokemon['moves']['0']['move'].name;
-    let move2 = pokemon['moves']['1']['move'].name;
-    let move3 = pokemon['moves']['2']['move'].name;
-    let move4 = pokemon['moves']['3']['move'].name;
-    let move5 = pokemon['moves']['4']['move'].name;
-    let move6 = pokemon['moves']['5']['move'].name;
-    let move7 = pokemon['moves']['6']['move'].name;
-
-
-    createCard(name, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, move1, move2, move3, move4, move5, move6, move7);
+    const maxMovelength = smallest(pokemon['moves'].length, 6);
+    console.log(maxMovelength);
+    let moves = [];
+    for (let index = 0; index < maxMovelength; index++) {
+        moves.push(pokemon['moves'][index]['move'].name);
+    }
+    console.log(moves);
+    createCard(name, image, weight, height, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves);
 }
 
-function createCard(name, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, move1, move2, move3, move4, move5, move6, move7) {
+function smallest(first, second) {
+    if (first < second) {
+        return first;
+    }
+    return second;
+}
+function createCard(name, image, weight, height, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves) {
 
 
     document.getElementById('pokedex-overview').innerHTML += `
-    <div class="deck" id="deck${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', '${ability2}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${move1}', '${move2}', '${move3}', '${move4}', '${move5}', '${move6}', '${move7}')">
+    <div class="deck" id="deck${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${moves}')">
     <div class="small-card">
     <div class="h3">${name}</div>
     <span class="badge badge-primary" id="badge2${i}">${type}</span>
@@ -141,7 +142,7 @@ function createCard(name, image, weight, height, ability1, ability2, hp, attack,
     document.getElementById('table-small').innerHTML += `
       <tr>
         <th scope="row">${i + 1}</th>
-        <td id="table-down${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', '${ability2}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${move1}', '${move2}', '${move3}', '${move4}', '${move5}', '${move6}', '${move7}')">${name}</td>
+        <td id="table-down${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, ${moves})">${name}</td>
         <td>${type}</td>
       </tr>
     `
@@ -235,7 +236,7 @@ function checkDeckColor(i, type) {
  * @param {string} move6
  * @param {string} move7
  */
-function showCurrentCard(i, name, type, image, weight, height, ability1, ability2, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, move1, move2, move3, move4, move5, move6, move7) {
+function showCurrentCard(i, name, type, image, weight, height, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, moves) {
     addAudio(type);
     window.scrollTo(0, 0);
     document.getElementById(`wholeCard`).innerHTML = '';
@@ -261,7 +262,7 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
             <span class="left">Height</span>    <span class="right">${height}0 cm</span>
             </div>
             <div class="sub-info">
-            <span class="left">Ability</span>    <span class="right">${ability1}, ${ability2}</span>
+            <span class="left">Ability</span>    <span class="right"></span>
             </div>
             <div class="sub-info">
             <span class="left">Capture Rate</span>    <span class="right">${captureRate}</span>
@@ -316,41 +317,36 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, ability
         </div>
         </div>
         </div>
-
-
-        <div class="info d-none" id="moves${i}">
-            <div class="top-info">
-            <div class="sub-info">
-            <span class="left">Move 1</span>    <span class="right">${move1}</span>
-            </div>
-            <div class="sub-info">
-            <span class="left">Move 2</span>    <span class="right">${move2}</span>
-            </div>
-            <div class="sub-info">
-            <span class="left">Move 3</span>    <span class="right">${move3}</span>
-            </div>
-            <div class="sub-info">
-            <span class="left">Move 4</span>    <span class="right">${move4}</span>
-            </div>
-            <div class="sub-info">
-            <span class="left">Move 5</span>    <span class="right">${move5}</span>
-            </div>
-            <div class="sub-info">
-            <span class="left">Move 6</span>    <span class="right">${move6}</span>
-            </div>
-            <div class="sub-info">
-            <span class="left">Move 7</span>    <span class="right">${move7}</span>
-            </div>
-            </div>
+        ${templateMoves(i, moves)}
         `
     checkCardColor(i, type);
 }
+
+function templateMoves(i, moves) {
+    console.log(moves);
+    const moveList = moves.split(',');
+    let template = `<div class="info d-none" id="moves${i}">
+    <div class="top-info">`;
+
+
+    for (let j = 0; j < moveList.length; j++) {
+        template +=
+            `<div class="sub-info">
+        <span class="left">Move ${j + 1}</span>${moveList[j]}<span class="right"></span>
+        </div>`;
+    }
+    return template;
+}
+
+
+
+
 
 function closeSingleCard() {
     document.getElementById(`wholeCard`).innerHTML = '';
 }
 
-function addAudio(type){
+function addAudio(type) {
     if (type == 'electric') {
         audio1.play();
         audio1.volume = 0.3;
