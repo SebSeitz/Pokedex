@@ -10,7 +10,7 @@ let currentSpecies;
 let pokename;
 let url;
 let response;
-let loadNextPokemon = 20;
+let loadNextPokemon;
 let checkThisEvent;
 let name;
 let nameList = [];
@@ -23,8 +23,10 @@ let audio2 = new Audio('audio/water_splash.mp3');
 let audio3 = new Audio('audio/grass.mp3');
 let audio4 = new Audio('audio/fire.mp3');
 let audio5 = new Audio('audio/warp.mp3');
+let audio6 = new Audio('audio/bug.mp3');
 
 async function loadPokemon() {
+    loadNextPokemon = 20;
     for (let i = 1; i < loadNextPokemon; i++) {
         // const pokename = pokenames[i]
         url = `https://pokeapi.co/api/v2/pokemon/${i}`;
@@ -33,7 +35,7 @@ async function loadPokemon() {
         console.log('loaded Pokemon', currentPokemon);
         await loadSpecies(currentPokemon);
         renderPokemonInfo(currentPokemon, currentSpecies, i);
-        createNameList(i);
+        createNameList();
     }
     window.addEventListener('scroll', checkScroll);
 
@@ -42,6 +44,7 @@ async function loadPokemon() {
 function createNameList() {
     nameList.push(currentPokemon['name']);
     console.log('this is the name list', nameList);
+    console.log('loaded Pokemon', currentPokemon);
 }
 
 const checkScroll = async () => {
@@ -56,6 +59,7 @@ const checkScroll = async () => {
             currentPokemon = await response.json();
             await loadSpecies(currentPokemon);
             renderPokemonInfo(currentPokemon, currentSpecies, i);
+            createNameList();
         }
         loadNextPokemon += 5;
         console.log('current pokemonCount', loadNextPokemon);
@@ -66,20 +70,18 @@ async function loadSpecies(currentPokemon) {
     let url = currentPokemon['species']['url'];
     let response = await fetch(url);
     currentSpecies = await response.json(); //currentSpecies ist global als leere Variable definiert
-    console.log('loaded Species', currentSpecies);
 }
 
 function searchPokemon() {
-    console.log(loadNextPokemon)
     let search = document.getElementById('searchInput').value;
-    let searchResults = nameList.filter(pokemon => pokemon.includes(search, 0));
-    updatePokemons(searchResults);
+    let searchResults = nameList.filter(pokemon => pokemon.startsWith(search, 0));
+    console.log('namelist after search', searchResults);
+    updatePokemons(searchResults)
 }
-
 
 async function updatePokemons(pokemons) {
     document.getElementById('pokedex-overview').innerHTML = '';
-    for (let i = 0; i < loadNextPokemon; i++) {
+    for (let i = 0; i < nameList.length; i++) {
         const pokename = pokemons[i]
         let url = `https://pokeapi.co/api/v2/pokemon/${pokename}`;
         let response = await fetch(url);
@@ -109,12 +111,10 @@ function renderPokemonInfo(pokemon, species, i) {
     let captureRate = species['capture_rate'];
     let image2 = pokemon['sprites'].front_default;
     const maxMovelength = smallest(pokemon['moves'].length, 6);
-    console.log(maxMovelength);
     let moves = [];
     for (let index = 0; index < maxMovelength; index++) {
         moves.push(pokemon['moves'][index]['move'].name);
     }
-    console.log(moves);
     createCard(name, image, weight, height, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves);
 }
 
@@ -164,6 +164,12 @@ function getBadgeColor(type) {
         return 'dark-green';
     } else if (type == 'normal') {
         return 'purple';
+    } else if (type == 'bug') {
+        return 'brown';
+    } else if (type == 'ground') {
+        return 'grey';
+    } else if (type == 'fairy') {
+        return 'pink2';
     }
 }
 function getDeckColor(type) {
@@ -181,6 +187,12 @@ function getDeckColor(type) {
         return 'dark-green2';
     } else if (type == 'normal') {
         return 'purple2';
+    } else if (type == 'bug') {
+        return 'brown2';
+    }  else if (type == 'ground') {
+       return 'grey2';
+    }  else if (type == 'fairy') {
+       return 'pink';
     }
 }
 
@@ -323,11 +335,9 @@ function showCurrentCard(i, name, type, image, weight, height, hp, attack, defen
 }
 
 function templateMoves(i, moves) {
-    console.log(moves);
     const moveList = moves.split(',');
     let template = `<div class="info d-none" id="moves${i}">
     <div class="top-info">`;
-
 
     for (let j = 0; j < moveList.length; j++) {
         template +=
@@ -337,9 +347,6 @@ function templateMoves(i, moves) {
     }
     return template;
 }
-
-
-
 
 
 function closeSingleCard() {
@@ -362,6 +369,9 @@ function addAudio(type) {
     } else if (type == 'psychic') {
         audio5.play();
         audio5.volume = 0.3;
+    } else if (type == 'bug') {
+        audio6.play();
+        audio6.volume = 0.2;
     }
 }
 
@@ -395,8 +405,19 @@ function checkCardColor(i, type) {
         document.getElementById(`badge${i}`).classList.add('purple');
         document.getElementById(`pokedex${i}`).classList.add('purple2');
     }
+    if (type == 'bug') {
+        document.getElementById(`badge${i}`).classList.add('brown');
+        document.getElementById(`pokedex${i}`).classList.add('brown2');
+    }
+    if (type == 'ground') {
+        document.getElementById(`badge${i}`).classList.add('grey');
+        document.getElementById(`pokedex${i}`).classList.add('grey2');
+    }
+    if (type == 'fairy') {
+        document.getElementById(`badge${i}`).classList.add('pink');
+        document.getElementById(`pokedex${i}`).classList.add('pink2');
+    }
 }
-
 
 function showBaseStats(i) {
     document.getElementById(`base-stats${i}`).classList.remove('d-none');
@@ -407,14 +428,12 @@ function showAbout(i) {
     document.getElementById(`about${i}`).classList.remove('d-none');
     document.getElementById(`base-stats${i}`).classList.add('d-none');
     document.getElementById(`moves${i}`).classList.add('d-none');
-
 }
 
 function showMoves(i) {
     document.getElementById(`moves${i}`).classList.remove('d-none');
     document.getElementById(`about${i}`).classList.add('d-none');
     document.getElementById(`base-stats${i}`).classList.add('d-none');
-
 }
 
 function showTable() {
