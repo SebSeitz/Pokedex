@@ -97,7 +97,11 @@ function renderPokemonInfo(pokemon, species, i) {
     let image = pokemon['sprites']['other']['dream_world'].front_default;
     let weight = pokemon['weight'];
     let height = pokemon['height'];
-    let ability1 = pokemon['abilities']['0']['ability']['name'];
+    const maxAbilitylength = smallest(pokemon['abilities'].length, 3);
+    let abilities = [];
+    for (let index = 0; index < maxAbilitylength; index++) {
+        abilities.push(pokemon['abilities'][index]['ability']['name']);
+    }
    // let ability2 = pokemon['abilities']['1']['ability']['name'];
     let type = pokemon['types']['0']['type'].name;
     let hp = pokemon['stats']['0']['base_stat'];
@@ -110,25 +114,25 @@ function renderPokemonInfo(pokemon, species, i) {
     let genus = species['genera']['7']['genus'];
     let captureRate = species['capture_rate'];
     let image2 = pokemon['sprites'].front_default;
-    const maxMovelength = smallestMoveLength(pokemon['moves'].length, 6);
+    const maxMovelength = smallest(pokemon['moves'].length, 6);
     let moves = [];
     for (let index = 0; index < maxMovelength; index++) {
         moves.push(pokemon['moves'][index]['move'].name);
     }
-    createCard(name, image, weight, height, ability1, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves);
+    createCard(name, image, weight, height, abilities, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves);
 }
 
-function smallestMoveLength(first, second) {
+function smallest(first, second) {
     if (first < second) {
         return first;
     }
     return second;
 }
-function createCard(name, image, weight, height, ability1, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves) {
+function createCard(name, image, weight, height, abilities, hp, attack, defense, specialAttack, specialDefense, speed, type, i, eggGroup, genus, captureRate, image2, moves) {
 
 
     document.getElementById('pokedex-overview').innerHTML += `
-    <div class="deck" id="deck${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${moves}')">
+    <div class="deck" id="deck${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${abilities}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, '${moves}')">
     <div class="small-card">
     <div class="h3">${name}</div>
     <span class="badge badge-primary" id="badge2${i}">${type}</span>
@@ -142,7 +146,7 @@ function createCard(name, image, weight, height, ability1, hp, attack, defense, 
     document.getElementById('table-small').innerHTML += `
       <tr>
         <th scope="row">${i + 1}</th>
-        <td id="table-down${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${ability1}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, ${moves})">${name}</td>
+        <td id="table-down${i}" onclick="showCurrentCard(${i}, '${name}', '${type}', '${image}', ${weight}, ${height}, '${abilities}', ${hp}, ${attack}, ${defense}, ${specialAttack}, ${specialDefense}, ${speed}, '${type}', '${eggGroup}', '${genus}', ${captureRate}, ${moves})">${name}</td>
         <td>${type}</td>
       </tr>
     `
@@ -248,7 +252,7 @@ function checkDeckColor(i, type) {
  * @param {string} move6
  * @param {string} move7
  */
-function showCurrentCard(i, name, type, image, weight, height, ability1, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, moves) {
+function showCurrentCard(i, name, type, image, weight, height, abilities, hp, attack, defense, specialAttack, specialDefense, speed, type, eggGroup, genus, captureRate, moves) {
     addAudio(type);
     window.scrollTo(0, 0);
     document.getElementById(`wholeCard`).innerHTML = '';
@@ -274,7 +278,7 @@ function showCurrentCard(i, name, type, image, weight, height, ability1, hp, att
             <span class="left">Height</span>    <span class="right">${height}0 cm</span>
             </div>
             <div class="sub-info">
-            <span class="left">Ability</span>    <span class="right">${ability1}</span>
+            <span class="left">Ability</span>    <span class="right">${abilities}</span>
             </div>
             <div class="sub-info">
             <span class="left">Capture Rate</span>    <span class="right">${captureRate}</span>
